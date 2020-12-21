@@ -10,6 +10,9 @@
 		E956FE072590BBC100E22544 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E956FE062590BBC100E22544 /* AppDelegate.swift */; };
 		E956FE0B2590BBC100E22544 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E956FE0A2590BBC100E22544 /* ViewController.swift */; };
 		E956FE132590BBC400E22544 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E956FE122590BBC400E22544 /* Assets.xcassets */; };
+		E956FE272590C9B100E22544 /* ViewController+TableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E956FE262590C9B100E22544 /* ViewController+TableViewDataSource.swift */; };
+		E956FE2E2590CB7A00E22544 /* ViewController+TableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E956FE2D2590CB7A00E22544 /* ViewController+TableViewDelegate.swift */; };
+		E956FE322590CD1600E22544 /* UIView+Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E956FE312590CD1600E22544 /* UIView+Extentions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -18,6 +21,9 @@
 		E956FE0A2590BBC100E22544 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E956FE122590BBC400E22544 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E956FE172590BBC400E22544 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E956FE262590C9B100E22544 /* ViewController+TableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+TableViewDataSource.swift"; sourceTree = "<group>"; };
+		E956FE2D2590CB7A00E22544 /* ViewController+TableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+TableViewDelegate.swift"; sourceTree = "<group>"; };
+		E956FE312590CD1600E22544 /* UIView+Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extentions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,11 +57,30 @@
 			isa = PBXGroup;
 			children = (
 				E956FE062590BBC100E22544 /* AppDelegate.swift */,
-				E956FE0A2590BBC100E22544 /* ViewController.swift */,
+				E956FE242590C98A00E22544 /* ViewController */,
+				E956FE302590CCE500E22544 /* Helpers */,
 				E956FE122590BBC400E22544 /* Assets.xcassets */,
 				E956FE172590BBC400E22544 /* Info.plist */,
 			);
 			path = "File Manager";
+			sourceTree = "<group>";
+		};
+		E956FE242590C98A00E22544 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E956FE0A2590BBC100E22544 /* ViewController.swift */,
+				E956FE262590C9B100E22544 /* ViewController+TableViewDataSource.swift */,
+				E956FE2D2590CB7A00E22544 /* ViewController+TableViewDelegate.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		E956FE302590CCE500E22544 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				E956FE312590CD1600E22544 /* UIView+Extentions.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -127,7 +152,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				E956FE0B2590BBC100E22544 /* ViewController.swift in Sources */,
+				E956FE2E2590CB7A00E22544 /* ViewController+TableViewDelegate.swift in Sources */,
+				E956FE322590CD1600E22544 /* UIView+Extentions.swift in Sources */,
 				E956FE072590BBC100E22544 /* AppDelegate.swift in Sources */,
+				E956FE272590C9B100E22544 /* ViewController+TableViewDataSource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
