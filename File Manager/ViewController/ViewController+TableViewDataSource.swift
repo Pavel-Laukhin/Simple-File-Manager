@@ -9,14 +9,23 @@ import UIKit
 
 extension ViewController: UITableViewDataSource {
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return contentList.count
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return contentList[section].count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell") else { return UITableViewCell() }
-//        cell.imageView =
-//        cell.textLabel =
+        cell.textLabel?.text = contentList[indexPath.section][indexPath.row]
+        if indexPath.section == 0 {
+            cell.imageView?.image = #imageLiteral(resourceName: "directory")
+        } else {
+            cell.imageView?.image = #imageLiteral(resourceName: "file")
+        }
+        cell.accessoryType = .disclosureIndicator
         return cell
     }
     

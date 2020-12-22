@@ -13,6 +13,9 @@
 		E956FE272590C9B100E22544 /* ViewController+TableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E956FE262590C9B100E22544 /* ViewController+TableViewDataSource.swift */; };
 		E956FE2E2590CB7A00E22544 /* ViewController+TableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E956FE2D2590CB7A00E22544 /* ViewController+TableViewDelegate.swift */; };
 		E956FE322590CD1600E22544 /* UIView+Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E956FE312590CD1600E22544 /* UIView+Extentions.swift */; };
+		E956FE3C2590D13900E22544 /* FileManagerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E956FE3B2590D13900E22544 /* FileManagerService.swift */; };
+		E956FE4125912F5200E22544 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E956FE4025912F5100E22544 /* Array+Extensions.swift */; };
+		E956FE442591367700E22544 /* RandomAccessCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E956FE432591367700E22544 /* RandomAccessCollection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +27,9 @@
 		E956FE262590C9B100E22544 /* ViewController+TableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+TableViewDataSource.swift"; sourceTree = "<group>"; };
 		E956FE2D2590CB7A00E22544 /* ViewController+TableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+TableViewDelegate.swift"; sourceTree = "<group>"; };
 		E956FE312590CD1600E22544 /* UIView+Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extentions.swift"; sourceTree = "<group>"; };
+		E956FE3B2590D13900E22544 /* FileManagerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerService.swift; sourceTree = "<group>"; };
+		E956FE4025912F5100E22544 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
+		E956FE432591367700E22544 /* RandomAccessCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomAccessCollection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +64,7 @@
 			children = (
 				E956FE062590BBC100E22544 /* AppDelegate.swift */,
 				E956FE242590C98A00E22544 /* ViewController */,
+				E956FE3A2590D11400E22544 /* FileManagerService */,
 				E956FE302590CCE500E22544 /* Helpers */,
 				E956FE122590BBC400E22544 /* Assets.xcassets */,
 				E956FE172590BBC400E22544 /* Info.plist */,
@@ -81,6 +88,16 @@
 				E956FE312590CD1600E22544 /* UIView+Extentions.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		E956FE3A2590D11400E22544 /* FileManagerService */ = {
+			isa = PBXGroup;
+			children = (
+				E956FE3B2590D13900E22544 /* FileManagerService.swift */,
+				E956FE4025912F5100E22544 /* Array+Extensions.swift */,
+				E956FE432591367700E22544 /* RandomAccessCollection.swift */,
+			);
+			path = FileManagerService;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -154,8 +171,11 @@
 				E956FE0B2590BBC100E22544 /* ViewController.swift in Sources */,
 				E956FE2E2590CB7A00E22544 /* ViewController+TableViewDelegate.swift in Sources */,
 				E956FE322590CD1600E22544 /* UIView+Extentions.swift in Sources */,
+				E956FE4125912F5200E22544 /* Array+Extensions.swift in Sources */,
 				E956FE072590BBC100E22544 /* AppDelegate.swift in Sources */,
 				E956FE272590C9B100E22544 /* ViewController+TableViewDataSource.swift in Sources */,
+				E956FE442591367700E22544 /* RandomAccessCollection.swift in Sources */,
+				E956FE3C2590D13900E22544 /* FileManagerService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,15 +10,24 @@ import UIKit
 extension ViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let city = cities.list[indexPath.row]
-//        let vc = DetailViewController(forCity: city)
-//        navigationController?.pushViewController(vc, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
+        if indexPath.section == 0 {
+            let folderName = contentList[indexPath.section][indexPath.row]
+            let vc = ViewController(title: folderName)
+            navigationController?.pushViewController(vc, animated: true)
+        } else if indexPath.section == 1 {
+            //TODO: Сделать контроллер с содержимым файла:
+//            let fileName = contentList[indexPath.section][indexPath.row]
+//            let vc =
+//            navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let deleteAction = UIContextualAction(style: .destructive, title: "Удалить") { _, _, complete in
-
-//            CitiesImpl.shared.removeCity(at: indexPath.row)
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [unowned self] _, _, complete in
+            let folderName = contentList[indexPath.section][indexPath.row]
+            fileManager.delete(at: title ?? "", withName: folderName)
+            contentList[indexPath.section].remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
             complete(true)
         }
