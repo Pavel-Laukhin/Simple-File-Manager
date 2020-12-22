@@ -16,6 +16,7 @@
 		E956FE3C2590D13900E22544 /* FileManagerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E956FE3B2590D13900E22544 /* FileManagerService.swift */; };
 		E956FE4125912F5200E22544 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E956FE4025912F5100E22544 /* Array+Extensions.swift */; };
 		E956FE442591367700E22544 /* RandomAccessCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E956FE432591367700E22544 /* RandomAccessCollection.swift */; };
+		E980E0B5259238C3006036B2 /* FileContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E980E0B4259238C3006036B2 /* FileContentViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		E956FE3B2590D13900E22544 /* FileManagerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerService.swift; sourceTree = "<group>"; };
 		E956FE4025912F5100E22544 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		E956FE432591367700E22544 /* RandomAccessCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomAccessCollection.swift; sourceTree = "<group>"; };
+		E980E0B4259238C3006036B2 /* FileContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileContentViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,7 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				E956FE062590BBC100E22544 /* AppDelegate.swift */,
-				E956FE242590C98A00E22544 /* ViewController */,
+				E980E0B325923898006036B2 /* Controllers */,
 				E956FE3A2590D11400E22544 /* FileManagerService */,
 				E956FE302590CCE500E22544 /* Helpers */,
 				E956FE122590BBC400E22544 /* Assets.xcassets */,
@@ -85,6 +87,8 @@
 		E956FE302590CCE500E22544 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				E956FE4025912F5100E22544 /* Array+Extensions.swift */,
+				E956FE432591367700E22544 /* RandomAccessCollection.swift */,
 				E956FE312590CD1600E22544 /* UIView+Extentions.swift */,
 			);
 			path = Helpers;
@@ -94,10 +98,17 @@
 			isa = PBXGroup;
 			children = (
 				E956FE3B2590D13900E22544 /* FileManagerService.swift */,
-				E956FE4025912F5100E22544 /* Array+Extensions.swift */,
-				E956FE432591367700E22544 /* RandomAccessCollection.swift */,
 			);
 			path = FileManagerService;
+			sourceTree = "<group>";
+		};
+		E980E0B325923898006036B2 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				E956FE242590C98A00E22544 /* ViewController */,
+				E980E0B4259238C3006036B2 /* FileContentViewController.swift */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -169,6 +180,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E956FE0B2590BBC100E22544 /* ViewController.swift in Sources */,
+				E980E0B5259238C3006036B2 /* FileContentViewController.swift in Sources */,
 				E956FE2E2590CB7A00E22544 /* ViewController+TableViewDelegate.swift in Sources */,
 				E956FE322590CD1600E22544 /* UIView+Extentions.swift in Sources */,
 				E956FE4125912F5200E22544 /* Array+Extensions.swift in Sources */,

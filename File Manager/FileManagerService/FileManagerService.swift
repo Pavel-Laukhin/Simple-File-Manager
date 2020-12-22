@@ -13,10 +13,10 @@ protocol FileManagerServiceProtocol {
     func getContent(for directory: String) -> [String]?
     
     /// Добавляет папку. Возвращает true в случае удачи и false в случае неудачи.
-    func addFolderNamed(as name: String, in directory: String) -> Bool
+    func addFolderNamed(as name: String, to directory: String) -> Bool
     
     /// Добавляет файл. Возвращает true в случае удачи и false в случае неудачи.
-    func addFile(as name: String, in directory: String) -> Bool
+    func addFile(containing: String, toDirectory directory: String, withName name: String) -> Bool
     
     /// Удаляет файл или папку.
     func delete(at path: String, withName name: String)
@@ -24,81 +24,84 @@ protocol FileManagerServiceProtocol {
 }
 
 struct FileManagerService: FileManagerServiceProtocol {
-        
-    enum AppDirectories: String, CaseIterable {
-        case Documents = "Documents"
-        case Inbox = "Inbox"
-        case Library = "Library"
-        case Tmp = "tmp"
-    }
     
     func getContent(for directory: String) -> [String]? {
         guard let directoryPath = getURL(for: directory)?.path,
-              let directory = try? FileManager.default.contentsOfDirectory(atPath: directoryPath)else { return nil }
+              let directory = try? FileManager.default.contentsOfDirectory(atPath: directoryPath)else {
+            assertionFailure("\(#function) Can't make path or get a content")
+            return nil
+        }
         print("directoryPath: \(directoryPath)")
         return directory
     }
     
-    func addFolderNamed(as name: String, in directory: String) -> Bool {
-        guard var directoryPath = getURL(for: directory)?.path else {
+    func addFolderNamed(as name: String, to directory: String) -> Bool {
+        guard let _ = getURL(for: directory + "/" + name)?.path else {
             assertionFailure("\(#function) Can't create directory path!")
             return false
         }
-        directoryPath += "/" + name
-        do {
-            try FileManager.default.createDirectory(atPath: directoryPath, withIntermediateDirectories: false, attributes: nil)
-            return true
+        return true
+    }
+    
+    func addFile(containing: String, toDirectory directory: String, withName name: String) -> Bool {
+        guard var filePath = getURL(for: directory)?.path else {
+            assertionFailure("\(#function) Can't create directory path!")
+            return false
         }
-        catch {
-            assertionFailure("\(#function) Can't create folder!")
+        filePath += "/" + name
+        let rawData: Data? = containing.data(using: .utf8)
+        if FileManager.default.createFile(atPath: filePath, contents: rawData, attributes: nil) {
+            return true
+        } else {
+            assertionFailure("\(#function) Can't create file!")
             return false
         }
     }
     
-    //TODO: addFile
-    func addFile(as name: String, in directory: String) -> Bool {
-        return true
+    func readFile(from directory: String, withName name: String) -> String? {
+        guard var filePath = getURL(for: directory)?.path else {
+            assertionFailure("\(#function) Can't create directory path!")
+            return nil
+        }
+        filePath += "/" + name
+        guard let fileContent = FileManager.default.contents(atPath: filePath),
+              let fileContentEncoded = String(bytes: fileContent, encoding: .utf8) else {
+            assertionFailure("\(#function) Can't get file content or encode it to String!")
+            return nil
+        }
+        return fileContentEncoded
     }
     
     func delete(at path: String, withName name: String) {
         guard let filePath = getURL(for: path)?.appendingPathComponent(name) else {
+            assertionFailure("\(#function) Can't create file path!")
             return
         }
-        try? FileManager.default.removeItem(at: filePath)
+        do {
+            try FileManager.default.removeItem(at: filePath)
+        } catch {
+            assertionFailure("\(#function) Can't remove item!")
+        }
     }
     
-    func writeFile(containing: String, to path: String, withName name: String) {
-        let filePath = (getURL(for: path)?.path)! + "/" + name
-        let rawData: Data? = containing.data(using: .utf8)
-        FileManager.default.createFile(atPath: filePath, contents: rawData, attributes: nil)
-    }
-
     private func getURL(for directory: String) -> URL? {
         switch directory {
         case "Documents":
             guard let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+                assertionFailure("\(#function) Can't make URL!")
                 return nil
             }
             return documents
-        case "Inbox":
-            guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(AppDirectories.Inbox.rawValue) else {
+        default:
+            let initialPath = "file://" + NSHomeDirectory() //+ urlDirectory
+            guard let url = URL(string: initialPath)?.appendingPathComponent(directory) else {
+                assertionFailure("\(#function) Can't make URL!")
                 return nil
             }
-            if FileManager.default.fileExists(atPath: "\(url)") {
-            } else {
-                //10
+            if !FileManager.default.fileExists(atPath: "\(url)") {
                 try? FileManager.default.createDirectory(at: url, withIntermediateDirectories: false, attributes: nil)
             }
             return url
-        case "Library":
-            guard let library = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first else {
-                return nil
-            }
-            return library
-        case "Tmp":
-            return FileManager.default.temporaryDirectory
-        default:
-            return nil
         }
     }
     

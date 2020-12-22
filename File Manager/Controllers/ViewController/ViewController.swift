@@ -10,7 +10,8 @@ import UIKit
 class ViewController: UIViewController {
     
     let fileManager = FileManagerService()
-    var contentList: [[String]] = [[]]
+    var foldersAndFilesList: [[String]] = [[],[]]
+    private(set) var directoryPath: String
     
     lazy private var tableView: UITableView = {
         let tableView = UITableView(frame: .zero)
@@ -21,7 +22,8 @@ class ViewController: UIViewController {
     }()
     
     // MARK: - Life cycle
-    init(title: String) {
+    init(title: String, at path: String) {
+        directoryPath = path
         super.init(nibName: nil, bundle: nil)
         self.title = title
     }
@@ -45,18 +47,19 @@ class ViewController: UIViewController {
         navigationItem.rightBarButtonItems = [addFileButton, addFolderButton]
         
         //add files and folders
-        if let title = title,
-           let contentList = fileManager.getContent(for: title) {
-            self.contentList[0] = contentList.sorted { $0.lowercased() < $1.lowercased() }
+        guard let contentList = fileManager.getContent(for: directoryPath) else {
+            assertionFailure("\(#function) Can't make content list!")
+            return
         }
+        foldersAndFilesList[0] = contentList.sorted { $0.lowercased() < $1.lowercased() }
     }
     
     private func addSubviews() {
         view.addSubview(tableView)
-        tableView.toAutoLayout()
     }
     
     private func setupSubviews() {
+        tableView.toAutoLayout()
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -72,11 +75,9 @@ class ViewController: UIViewController {
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         let createAction = UIAlertAction(title: "Create", style: .default) { [unowned self] _ in
             if let name = alert.textFields?.first?.text, !name.isEmpty {
-                if fileManager.addFolderNamed(as: name, in: title ?? "Documents") {
-                    let index = contentList[0].insertionIndex(of: name)
-                    contentList[0].insert(name, at: index)
-                    
-                    // 1-й вариант вставки:
+                if fileManager.addFolderNamed(as: name, to: directoryPath) {
+                    let index = foldersAndFilesList[0].insertionIndex(of: name)
+                    foldersAndFilesList[0].insert(name, at: index)
                     let indexPath = IndexPath(row: index, section: 0)
                     tableView.insertRows(at: [indexPath], with: .right)
                 }
@@ -91,7 +92,17 @@ class ViewController: UIViewController {
         let alert = UIAlertController(title: "File name", message: nil, preferredStyle: .alert)
         alert.addTextField(configurationHandler: nil)
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        let createAction = UIAlertAction(title: "Create", style: .default, handler: nil)
+        let contentString = "Hello world!"
+        let createAction = UIAlertAction(title: "Create", style: .default) { [unowned self] _ in
+            if let name = alert.textFields?.first?.text, !name.isEmpty {
+                if fileManager.addFile(containing: contentString, toDirectory: directoryPath, withName: name) {
+                    let index = foldersAndFilesList[1].insertionIndex(of: name)
+                    foldersAndFilesList[1].insert(name, at: index)
+                    let indexPath = IndexPath(row: index, section: 1)
+                    tableView.insertRows(at: [indexPath], with: .right)
+                }
+            }
+        }
         alert.addAction(cancelAction)
         alert.addAction(createAction)
         present(alert, animated: true, completion: nil)
