@@ -21,6 +21,9 @@ protocol FileManagerServiceProtocol {
     /// Удаляет файл или папку.
     func delete(at path: String, withName name: String)
     
+    /// Возвращает URL файла или папки. Возвращает nil, если такого файла/папки не существует.
+    func urlForItemNamed(as: String, inDirectory: String) -> URL?
+    
 }
 
 struct FileManagerService: FileManagerServiceProtocol {
@@ -84,6 +87,30 @@ struct FileManagerService: FileManagerServiceProtocol {
         }
     }
     
+    func urlForItemNamed(as name: String, inDirectory dir: String) -> URL? {
+        let fullName: String
+        if dir == "Documents" {
+            fullName = name
+        } else {
+            guard let startIndex = dir.firstIndex(of: "/") else {
+                assertionFailure("\(#function) Unknown folder!")
+                return nil
+            }
+            fullName = dir[startIndex...] + "/" + name
+        }
+        guard let itemURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(fullName) else {
+            assertionFailure("\(#function) Can't make URL!")
+            return nil
+        }
+        if FileManager.default.fileExists(atPath: "\(itemURL.path)"){
+            return itemURL
+        } else {
+            assertionFailure("\(#function) There is no item with name: \(name)")
+            return nil
+        }
+    }
+    
+    
     private func getURL(for directory: String) -> URL? {
         switch directory {
         case "Documents":
@@ -93,11 +120,12 @@ struct FileManagerService: FileManagerServiceProtocol {
             }
             return documents
         default:
-            let initialPath = "file://" + NSHomeDirectory() //+ urlDirectory
+            let initialPath = "file://" + NSHomeDirectory()
             guard let url = URL(string: initialPath)?.appendingPathComponent(directory) else {
                 assertionFailure("\(#function) Can't make URL!")
                 return nil
             }
+            
             if !FileManager.default.fileExists(atPath: "\(url)") {
                 try? FileManager.default.createDirectory(at: url, withIntermediateDirectories: false, attributes: nil)
             }

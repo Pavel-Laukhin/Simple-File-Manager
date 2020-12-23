@@ -13,11 +13,9 @@ extension ViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.section == 0 {
             let folderName = foldersAndFilesList[indexPath.section][indexPath.row]
-//            let urlFolderName = folderName.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
-            let vc = ViewController(title: folderName, at: "\(directoryPath)/\(folderName)")
+            let vc = ViewController(title: folderName, at: "\(currentDirectory)/\(folderName)")
             navigationController?.pushViewController(vc, animated: true)
         } else if indexPath.section == 1 {
-            //TODO: Сделать контроллер с содержимым файла:
             let fileName = foldersAndFilesList[indexPath.section][indexPath.row]
             let content = fileManager.readFile(from: title ?? "Documents", withName: fileName)
             let vc = FileContentViewController(title: fileName, content: content)

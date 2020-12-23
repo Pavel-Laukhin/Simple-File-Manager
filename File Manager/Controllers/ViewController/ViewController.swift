@@ -11,7 +11,7 @@ class ViewController: UIViewController {
     
     let fileManager = FileManagerService()
     var foldersAndFilesList: [[String]] = [[],[]]
-    private(set) var directoryPath: String
+    private(set) var currentDirectory: String
     
     lazy private var tableView: UITableView = {
         let tableView = UITableView(frame: .zero)
@@ -23,7 +23,7 @@ class ViewController: UIViewController {
     
     // MARK: - Life cycle
     init(title: String, at path: String) {
-        directoryPath = path
+        currentDirectory = path
         super.init(nibName: nil, bundle: nil)
         self.title = title
     }
@@ -36,23 +36,42 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         setupUI()
+        fillFoldersAndFilesList()
         addSubviews()
         setupSubviews()
     }
     
     private func setupUI() {
-        // add buttons to nav bar
-        let addFolderButton = UIBarButtonItem(image: #imageLiteral(resourceName: "addDirectory"), style: .plain, target: self, action: #selector(addFolder))
-        let addFileButton = UIBarButtonItem(image: #imageLiteral(resourceName: "addFile"), style: .plain, target: self, action: #selector(addFile))
+        let addFolderButton = UIBarButtonItem(image: #imageLiteral(resourceName: "addDirectory"), style: .plain, target: self, action: #selector(addNewFolder))
+        let addFileButton = UIBarButtonItem(image: #imageLiteral(resourceName: "addFile"), style: .plain, target: self, action: #selector(addNewFile))
         navigationItem.rightBarButtonItems = [addFileButton, addFolderButton]
-        
-        //add files and folders
-        guard let contentList = fileManager.getContent(for: directoryPath) else {
+    }
+    
+    private func fillFoldersAndFilesList() {
+        guard let contentList = fileManager.getContent(for: currentDirectory) else {
             assertionFailure("\(#function) Can't make content list!")
             return
         }
-        foldersAndFilesList[0] = contentList.sorted { $0.lowercased() < $1.lowercased() }
+        var foldersList: [String] = []
+        var filesList: [String] = []
+        for item in contentList {
+            if item.first == "." { // Пропускаем скрытые файлы и папки
+                continue
+            }
+            guard let url = fileManager.urlForItemNamed(as: item, inDirectory: currentDirectory) else {
+                assertionFailure("\(#function) There is no item with name: \(item)")
+                return
+            }
+            if url.hasDirectoryPath {
+                foldersList.append(item)
+            } else {
+                filesList.append(item)
+            }
+        }
+        foldersAndFilesList[0] = foldersList.sorted { $0.lowercased() < $1.lowercased() }
+        foldersAndFilesList[1] = filesList.sorted { $0.lowercased() < $1.lowercased() }
     }
+    
     
     private func addSubviews() {
         view.addSubview(tableView)
@@ -69,13 +88,13 @@ class ViewController: UIViewController {
     }
     
     // MARK: - Actions
-    @objc private func addFolder() {
+    @objc private func addNewFolder() {
         let alert = UIAlertController(title: "Directory name", message: nil, preferredStyle: .alert)
         alert.addTextField(configurationHandler: nil)
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         let createAction = UIAlertAction(title: "Create", style: .default) { [unowned self] _ in
             if let name = alert.textFields?.first?.text, !name.isEmpty {
-                if fileManager.addFolderNamed(as: name, to: directoryPath) {
+                if fileManager.addFolderNamed(as: name, to: currentDirectory) {
                     let index = foldersAndFilesList[0].insertionIndex(of: name)
                     foldersAndFilesList[0].insert(name, at: index)
                     let indexPath = IndexPath(row: index, section: 0)
@@ -88,14 +107,14 @@ class ViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    @objc private func addFile() {
+    @objc private func addNewFile() {
         let alert = UIAlertController(title: "File name", message: nil, preferredStyle: .alert)
         alert.addTextField(configurationHandler: nil)
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         let contentString = "Hello world!"
         let createAction = UIAlertAction(title: "Create", style: .default) { [unowned self] _ in
             if let name = alert.textFields?.first?.text, !name.isEmpty {
-                if fileManager.addFile(containing: contentString, toDirectory: directoryPath, withName: name) {
+                if fileManager.addFile(containing: contentString, toDirectory: currentDirectory, withName: name) {
                     let index = foldersAndFilesList[1].insertionIndex(of: name)
                     foldersAndFilesList[1].insert(name, at: index)
                     let indexPath = IndexPath(row: index, section: 1)
@@ -106,8 +125,7 @@ class ViewController: UIViewController {
         alert.addAction(cancelAction)
         alert.addAction(createAction)
         present(alert, animated: true, completion: nil)
-//        fileManager.addFile()
     }
-
+    
 }
 
