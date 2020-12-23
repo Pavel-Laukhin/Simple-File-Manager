@@ -9,7 +9,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let fileManager = FileManagerService()
+    let fileManager: FileManagerServiceProtocol = FileManagerService()
     var foldersAndFilesList: [[String]] = [[],[]]
     private(set) var currentDirectory: String
     
@@ -94,7 +94,7 @@ class ViewController: UIViewController {
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         let createAction = UIAlertAction(title: "Create", style: .default) { [unowned self] _ in
             if let name = alert.textFields?.first?.text, !name.isEmpty {
-                if fileManager.addFolderNamed(as: name, to: currentDirectory) {
+                if fileManager.addNewFolder(namedAs: name, to: currentDirectory) {
                     let index = foldersAndFilesList[0].insertionIndex(of: name)
                     foldersAndFilesList[0].insert(name, at: index)
                     let indexPath = IndexPath(row: index, section: 0)
@@ -114,7 +114,7 @@ class ViewController: UIViewController {
         let contentString = "Hello world!"
         let createAction = UIAlertAction(title: "Create", style: .default) { [unowned self] _ in
             if let name = alert.textFields?.first?.text, !name.isEmpty {
-                if fileManager.addFile(containing: contentString, toDirectory: currentDirectory, withName: name) {
+                if fileManager.addNewFile(namedAs: name, containing: contentString, toDirectory: currentDirectory) {
                     let index = foldersAndFilesList[1].insertionIndex(of: name)
                     foldersAndFilesList[1].insert(name, at: index)
                     let indexPath = IndexPath(row: index, section: 1)

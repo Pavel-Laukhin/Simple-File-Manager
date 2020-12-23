@@ -13,11 +13,11 @@ extension ViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.section == 0 {
             let folderName = foldersAndFilesList[indexPath.section][indexPath.row]
-            let vc = ViewController(title: folderName, at: "\(currentDirectory)/\(folderName)")
+            let vc = ViewController(title: folderName, at: (currentDirectory + "/" + folderName))
             navigationController?.pushViewController(vc, animated: true)
         } else if indexPath.section == 1 {
             let fileName = foldersAndFilesList[indexPath.section][indexPath.row]
-            let content = fileManager.readFile(from: title ?? "Documents", withName: fileName)
+            let content = fileManager.readFile(withName: fileName, from: currentDirectory)
             let vc = FileContentViewController(title: fileName, content: content)
             navigationController?.pushViewController(vc, animated: true)
         }
@@ -25,8 +25,8 @@ extension ViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [unowned self] _, _, complete in
-            let folderName = foldersAndFilesList[indexPath.section][indexPath.row]
-            fileManager.delete(at: title ?? "", withName: folderName)
+            let itemName = foldersAndFilesList[indexPath.section][indexPath.row]
+            fileManager.deleteItem(withName: itemName, inDirectory: currentDirectory)
             foldersAndFilesList[indexPath.section].remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
             complete(true)
