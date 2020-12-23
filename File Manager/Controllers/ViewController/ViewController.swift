@@ -9,7 +9,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let fileManager: FileManagerServiceProtocol = FileManagerService()
+    var fileManager: FileManagerServiceProtocol = FileManagerService()
     var foldersAndFilesList: [[String]] = [[],[]]
     private(set) var currentDirectory: String
     
@@ -93,14 +93,15 @@ class ViewController: UIViewController {
         alert.addTextField(configurationHandler: nil)
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         let createAction = UIAlertAction(title: "Create", style: .default) { [unowned self] _ in
-            if let name = alert.textFields?.first?.text, !name.isEmpty {
-                if fileManager.addNewFolder(namedAs: name, to: currentDirectory) {
-                    let index = foldersAndFilesList[0].insertionIndex(of: name)
-                    foldersAndFilesList[0].insert(name, at: index)
-                    let indexPath = IndexPath(row: index, section: 0)
-                    tableView.insertRows(at: [indexPath], with: .right)
-                }
+            guard let name = alert.textFields?.first?.text, !name.isEmpty,
+                  let checkedName = fileManager.addNewFolder(namedAs: name, to: currentDirectory) else {
+                assertionFailure("Can't make folder with new name!")
+                return
             }
+            let index = foldersAndFilesList[0].insertionIndex(of: checkedName)
+            foldersAndFilesList[0].insert(checkedName, at: index)
+            let indexPath = IndexPath(row: index, section: 0)
+            tableView.insertRows(at: [indexPath], with: .right)
         }
         alert.addAction(cancelAction)
         alert.addAction(createAction)
@@ -113,14 +114,15 @@ class ViewController: UIViewController {
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         let contentString = "Hello world!"
         let createAction = UIAlertAction(title: "Create", style: .default) { [unowned self] _ in
-            if let name = alert.textFields?.first?.text, !name.isEmpty {
-                if fileManager.addNewFile(namedAs: name, containing: contentString, toDirectory: currentDirectory) {
-                    let index = foldersAndFilesList[1].insertionIndex(of: name)
-                    foldersAndFilesList[1].insert(name, at: index)
-                    let indexPath = IndexPath(row: index, section: 1)
-                    tableView.insertRows(at: [indexPath], with: .right)
-                }
+            guard let name = alert.textFields?.first?.text, !name.isEmpty,
+                  let checkedName = fileManager.addNewFile(namedAs: name, containing: contentString, toDirectory: currentDirectory) else {
+                assertionFailure("Can't make file with new name!")
+                return
             }
+            let index = foldersAndFilesList[1].insertionIndex(of: checkedName)
+            foldersAndFilesList[1].insert(checkedName, at: index)
+            let indexPath = IndexPath(row: index, section: 1)
+            tableView.insertRows(at: [indexPath], with: .right)
         }
         alert.addAction(cancelAction)
         alert.addAction(createAction)

@@ -13,10 +13,10 @@ protocol FileManagerServiceProtocol {
     func getContent(for directory: String) -> [String]?
     
     /// Добавляет папку. Возвращает true в случае удачи и false в случае неудачи.
-    func addNewFolder(namedAs name: String, to directory: String) -> Bool
+    mutating func addNewFolder(namedAs name: String, to directory: String) -> String?
     
     /// Добавляет файл. Возвращает true в случае удачи и false в случае неудачи.
-    func addNewFile(namedAs name: String, containing: String, toDirectory directory: String) -> Bool
+    mutating func addNewFile(namedAs name: String, containing: String, toDirectory directory: String) -> String?
     
     /// Читает содержимое файла и возвращает текст, записанный внутри.
     func readFile(withName name: String, from directory: String) -> String?
@@ -31,6 +31,12 @@ protocol FileManagerServiceProtocol {
 
 struct FileManagerService: FileManagerServiceProtocol {
     
+    /// Индекс, который будет добавлен к имени элемента при попытке добавить элемент с повторяющимся именем. Добавляется к имени в конце в круглых скобках.
+    private var newIndex = 0
+    
+    /// Новое имя, которое будет присвоено элементу при попытке добавить элемент с повторяющимся именем. Новое имя будет содержать в конце индекс в круглых скобках.
+    private var newName = ""
+    
     func getContent(for directory: String) -> [String]? {
         guard let directoryPath = getURL(for: directory)?.path,
               let directory = try? FileManager.default.contentsOfDirectory(atPath: directoryPath)else {
@@ -41,33 +47,56 @@ struct FileManagerService: FileManagerServiceProtocol {
         return directory
     }
     
-    func addNewFolder(namedAs name: String, to directory: String) -> Bool {
+    mutating func addNewFolder(namedAs name: String, to directory: String) -> String? {
         guard let url = getURL(for: directory + "/" + name) else {
             assertionFailure("Can't create directory path!")
-            return false
+            return nil
         }
         if !FileManager.default.fileExists(atPath: "\(url.path)") {
             do {
                 try FileManager.default.createDirectory(at: url, withIntermediateDirectories: false, attributes: nil)
             } catch let error {
                 assertionFailure("Can't create directory! Error: \(error.localizedDescription)")
+                return nil
             }
+            return name
+        } else {
+            // Переименовываем задублированную папку. Добавляем к имени индекс до тех пор, пока новое имя не станет уникальным. После этого возвращаем новое имя.
+            let nameAndIndex = getNameAndIndex(from: name)
+            repeat {
+                newIndex = nameAndIndex.index ?? 0
+                newIndex += 1
+                newName = nameAndIndex.name + "(" + String(newIndex) + ")"
+            } while addNewFolder(namedAs: newName, to: directory) == nil
+            return newName
         }
-        return true
     }
     
-    func addNewFile(namedAs name: String, containing: String, toDirectory directory: String) -> Bool {
+    mutating func addNewFile(namedAs name: String, containing text: String, toDirectory directory: String) -> String? {
         guard var filePath = getURL(for: directory)?.path else {
             assertionFailure("Can't create directory path!")
-            return false
+            return nil
         }
         filePath += "/" + name
-        let rawData: Data? = containing.data(using: .utf8)
-        if FileManager.default.createFile(atPath: filePath, contents: rawData, attributes: nil) {
-            return true
+        
+        // Проверка, существует ли файл. Если нет, то заново...
+        if !FileManager.default.fileExists(atPath: "\(filePath)") {
+            let rawData: Data? = text.data(using: .utf8)
+            if FileManager.default.createFile(atPath: filePath, contents: rawData, attributes: nil) {
+                return name
+            } else {
+                assertionFailure("Can't create file!")
+                return nil
+            }
         } else {
-            assertionFailure("Can't create file!")
-            return false
+            // Переименовываем задублированную папку. Добавляем к имени индекс до тех пор, пока новое имя не станет уникальным. После этого возвращаем новое имя.
+            let nameAndIndex = getNameAndIndex(from: name)
+            repeat {
+                newIndex = nameAndIndex.index ?? 0
+                newIndex += 1
+                newName = nameAndIndex.name + "(" + String(newIndex) + ")"
+            } while addNewFile(namedAs: newName, containing: text, toDirectory: directory) == nil
+            return newName
         }
     }
     
@@ -120,7 +149,7 @@ struct FileManagerService: FileManagerServiceProtocol {
         }
     }
     
-    
+    //MARK: - Private
     private func getURL(for directory: String) -> URL? {
         switch directory {
         case "Documents":
@@ -136,6 +165,21 @@ struct FileManagerService: FileManagerServiceProtocol {
                 return nil
             }
             return url
+        }
+    }
+    
+    /// Возвращает кортеж, состоящий из имени и его индекса, если у имени был в конце числовой индекс в круглых скобках.
+    private func getNameAndIndex(from name: String) -> (name: String, index: Int?) {
+        if let last = name.reversed().first, last == ")",
+           let indexOfOpenBracket = name.reversed().firstIndex(of: "(") {
+            let nameWithoutIndex = String(name.reversed()[indexOfOpenBracket...].reversed().dropLast())
+            let stringBetweenBrackets = String(name.reversed()[...indexOfOpenBracket].reversed())
+                .dropFirst()
+                .dropLast()
+            let index = Int(stringBetweenBrackets)
+            return (nameWithoutIndex, index)
+        } else {
+            return (name, nil)
         }
     }
     
