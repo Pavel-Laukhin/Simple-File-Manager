@@ -78,7 +78,6 @@ struct FileManagerService: FileManagerServiceProtocol {
         }
         filePath += "/" + name
         
-        // Проверка, существует ли файл. Если нет, то заново...
         if !FileManager.default.fileExists(atPath: "\(filePath)") {
             let rawData: Data? = text.data(using: .utf8)
             if FileManager.default.createFile(atPath: filePath, contents: rawData, attributes: nil) {
@@ -88,7 +87,7 @@ struct FileManagerService: FileManagerServiceProtocol {
                 return nil
             }
         } else {
-            // Переименовываем задублированную папку. Добавляем к имени индекс до тех пор, пока новое имя не станет уникальным. После этого возвращаем новое имя.
+            // Переименовываем задублированный файл. Добавляем к имени индекс до тех пор, пока новое имя не станет уникальным. После этого возвращаем новое имя.
             let nameAndIndex = getNameAndIndex(from: name)
             newIndex = nameAndIndex.index ?? 0
             newIndex += 1
