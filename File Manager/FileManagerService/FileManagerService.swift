@@ -63,11 +63,10 @@ struct FileManagerService: FileManagerServiceProtocol {
         } else {
             // Переименовываем задублированную папку. Добавляем к имени индекс до тех пор, пока новое имя не станет уникальным. После этого возвращаем новое имя.
             let nameAndIndex = getNameAndIndex(from: name)
-            repeat {
-                newIndex = nameAndIndex.index ?? 0
-                newIndex += 1
-                newName = nameAndIndex.name + "(" + String(newIndex) + ")"
-            } while addNewFolder(namedAs: newName, to: directory) == nil
+            newIndex = nameAndIndex.index ?? 0
+            newIndex += 1
+            newName = nameAndIndex.name + "(" + String(newIndex) + ")"
+            addNewFolder(namedAs: newName, to: directory)
             return newName
         }
     }
@@ -91,11 +90,10 @@ struct FileManagerService: FileManagerServiceProtocol {
         } else {
             // Переименовываем задублированную папку. Добавляем к имени индекс до тех пор, пока новое имя не станет уникальным. После этого возвращаем новое имя.
             let nameAndIndex = getNameAndIndex(from: name)
-            repeat {
-                newIndex = nameAndIndex.index ?? 0
-                newIndex += 1
-                newName = nameAndIndex.name + "(" + String(newIndex) + ")"
-            } while addNewFile(namedAs: newName, containing: text, toDirectory: directory) == nil
+            newIndex = nameAndIndex.index ?? 0
+            newIndex += 1
+            newName = nameAndIndex.name + "(" + String(newIndex) + ")"
+            addNewFile(namedAs: newName, containing: text, toDirectory: directory)
             return newName
         }
     }
