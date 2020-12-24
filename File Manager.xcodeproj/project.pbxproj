@@ -68,8 +68,8 @@
 				E980E0B325923898006036B2 /* Controllers */,
 				E956FE3A2590D11400E22544 /* FileManagerService */,
 				E956FE302590CCE500E22544 /* Helpers */,
-				E956FE122590BBC400E22544 /* Assets.xcassets */,
-				E956FE172590BBC400E22544 /* Info.plist */,
+				E9F8BF2A25946C1300195BB7 /* Resources */,
+				E9F8BF2C25946C8900195BB7 /* Supplement files */,
 			);
 			path = "File Manager";
 			sourceTree = "<group>";
@@ -109,6 +109,22 @@
 				E980E0B4259238C3006036B2 /* FileContentViewController.swift */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		E9F8BF2A25946C1300195BB7 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E956FE122590BBC400E22544 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		E9F8BF2C25946C8900195BB7 /* Supplement files */ = {
+			isa = PBXGroup;
+			children = (
+				E956FE172590BBC400E22544 /* Info.plist */,
+			);
+			path = "Supplement files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -317,7 +333,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 367WY2VQ82;
-				INFOPLIST_FILE = "File Manager/Info.plist";
+				INFOPLIST_FILE = "File Manager/Supplement files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -336,7 +352,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 367WY2VQ82;
-				INFOPLIST_FILE = "File Manager/Info.plist";
+				INFOPLIST_FILE = "File Manager/Supplement files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

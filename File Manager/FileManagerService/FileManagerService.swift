@@ -66,7 +66,7 @@ struct FileManagerService: FileManagerServiceProtocol {
             newIndex = nameAndIndex.index ?? 0
             newIndex += 1
             newName = nameAndIndex.name + "(" + String(newIndex) + ")"
-            addNewFolder(namedAs: newName, to: directory)
+            _ = addNewFolder(namedAs: newName, to: directory)
             return newName
         }
     }
@@ -92,7 +92,7 @@ struct FileManagerService: FileManagerServiceProtocol {
             newIndex = nameAndIndex.index ?? 0
             newIndex += 1
             newName = nameAndIndex.name + "(" + String(newIndex) + ")"
-            addNewFile(namedAs: newName, containing: text, toDirectory: directory)
+            _ = addNewFile(namedAs: newName, containing: text, toDirectory: directory)
             return newName
         }
     }
