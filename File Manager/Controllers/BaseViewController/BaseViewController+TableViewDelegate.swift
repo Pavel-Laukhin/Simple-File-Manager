@@ -1,5 +1,5 @@
 //
-//  ViewController+TableViewDelegate.swift
+//  BaseViewController+TableViewDelegate.swift
 //  File Manager
 //
 //  Created by Павел on 21.12.2020.
@@ -7,13 +7,13 @@
 
 import UIKit
 
-extension ViewController: UITableViewDelegate {
+extension BaseViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.section == 0 {
             let folderName = foldersAndFilesList[indexPath.section][indexPath.row]
-            let vc = ViewController(title: folderName, at: (currentDirectory + "/" + folderName))
+            let vc = BaseViewController(title: folderName, at: (currentDirectory + "/" + folderName))
             navigationController?.pushViewController(vc, animated: true)
         } else if indexPath.section == 1 {
             let fileName = foldersAndFilesList[indexPath.section][indexPath.row]

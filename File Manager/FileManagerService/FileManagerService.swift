@@ -12,11 +12,11 @@ protocol FileManagerServiceProtocol {
     /// Метод возвращает список файлов и папок в указанной директории.
     func getContent(for directory: String) -> [String]?
     
-    /// Добавляет папку. Возвращает true в случае удачи и false в случае неудачи.
-    mutating func addNewFolder(namedAs name: String, to directory: String) -> String?
+    /// Возвращает true в случае удачи и false в случае неудачи.
+    func addNewFolder(namedAs name: String, to directory: String) -> String?
     
-    /// Добавляет файл. Возвращает true в случае удачи и false в случае неудачи.
-    mutating func addNewFile(namedAs name: String, containing: String, toDirectory directory: String) -> String?
+    /// Возвращает true в случае удачи и false в случае неудачи.
+    func addNewFile(namedAs name: String, containing: String, toDirectory directory: String) -> String?
     
     /// Читает содержимое файла и возвращает текст, записанный внутри.
     func readFile(withName name: String, from directory: String) -> String?
@@ -31,12 +31,6 @@ protocol FileManagerServiceProtocol {
 
 struct FileManagerService: FileManagerServiceProtocol {
     
-    /// Индекс, который будет добавлен к имени элемента при попытке добавить элемент с повторяющимся именем. Добавляется к имени в конце в круглых скобках.
-    private var newIndex = 0
-    
-    /// Новое имя, которое будет присвоено элементу при попытке добавить элемент с повторяющимся именем. Новое имя будет содержать в конце индекс в круглых скобках.
-    private var newName = ""
-    
     func getContent(for directory: String) -> [String]? {
         guard let directoryPath = getURL(for: directory)?.path,
               let directory = try? FileManager.default.contentsOfDirectory(atPath: directoryPath)else {
@@ -47,53 +41,34 @@ struct FileManagerService: FileManagerServiceProtocol {
         return directory
     }
     
-    mutating func addNewFolder(namedAs name: String, to directory: String) -> String? {
+    func addNewFolder(namedAs name: String, to directory: String) -> String? {
         guard let url = getURL(for: directory + "/" + name) else {
             assertionFailure("Can't create directory path!")
             return nil
         }
-        if !FileManager.default.fileExists(atPath: "\(url.path)") {
-            do {
-                try FileManager.default.createDirectory(at: url, withIntermediateDirectories: false, attributes: nil)
-            } catch let error {
-                assertionFailure("Can't create directory! Error: \(error.localizedDescription)")
-                return nil
-            }
-            return name
-        } else {
-            // Переименовываем задублированную папку. Добавляем к имени индекс до тех пор, пока новое имя не станет уникальным. После этого возвращаем новое имя.
-            let nameAndIndex = getNameAndIndex(from: name)
-            newIndex = nameAndIndex.index ?? 0
-            newIndex += 1
-            newName = nameAndIndex.name + "(" + String(newIndex) + ")"
-            _ = addNewFolder(namedAs: newName, to: directory)
-            return newName
-        }
-    }
-    
-    mutating func addNewFile(namedAs name: String, containing text: String, toDirectory directory: String) -> String? {
-        guard var filePath = getURL(for: directory)?.path else {
-            assertionFailure("Can't create directory path!")
+        let nameAndUrl = defineNameAndURL(forURL: url, isDirectory: true)
+        do {
+            try FileManager.default.createDirectory(at: nameAndUrl.url, withIntermediateDirectories: false, attributes: nil)
+        } catch let error {
+            assertionFailure("Can't create directory! Error: \(error.localizedDescription)")
             return nil
         }
-        filePath += "/" + name
-        
-        if !FileManager.default.fileExists(atPath: "\(filePath)") {
-            let rawData: Data? = text.data(using: .utf8)
-            if FileManager.default.createFile(atPath: filePath, contents: rawData, attributes: nil) {
-                return name
-            } else {
-                assertionFailure("Can't create file!")
-                return nil
-            }
+        return nameAndUrl.name
+    }
+    
+    func addNewFile(namedAs name: String, containing text: String, toDirectory directory: String) -> String? {
+        guard let url = getURL(for: directory + "/" + name) else {
+            assertionFailure("Can't create file path!")
+            return nil
+        }
+        let nameAndUrl = defineNameAndURL(forURL: url, isDirectory: false)
+        let filePath = nameAndUrl.url.path
+        let rawData: Data? = text.data(using: .utf8)
+        if FileManager.default.createFile(atPath: filePath, contents: rawData, attributes: nil) {
+            return nameAndUrl.name
         } else {
-            // Переименовываем задублированный файл. Добавляем к имени индекс до тех пор, пока новое имя не станет уникальным. После этого возвращаем новое имя.
-            let nameAndIndex = getNameAndIndex(from: name)
-            newIndex = nameAndIndex.index ?? 0
-            newIndex += 1
-            newName = nameAndIndex.name + "(" + String(newIndex) + ")"
-            _ = addNewFile(namedAs: newName, containing: text, toDirectory: directory)
-            return newName
+            assertionFailure("Can't create file!")
+            return nil
         }
     }
     
@@ -163,6 +138,25 @@ struct FileManagerService: FileManagerServiceProtocol {
             }
             return url
         }
+    }
+    
+    /// Если объект с таким именем существует, то метод переименовывает задублированный объект. Добавляет к имени индекс до тех пор, пока новое имя не станет уникальным.
+    /// - Returns: Возвращает точно такое же имя, но с суффиксом в виде индекса в круглых скобках.
+    private func defineNameAndURL(forURL url: URL, isDirectory: Bool) -> (name: String, url: URL) {
+        var itemPath = url.path
+        var newIndex = 0
+        var newName = url.lastPathComponent
+        var newUrl = url
+        while FileManager.default.fileExists(atPath: "\(itemPath)") {
+            let nameAndIndex = getNameAndIndex(from: newName)
+            newIndex = nameAndIndex.index ?? 0
+            newIndex += 1
+            newName = nameAndIndex.name + "(" + String(newIndex) + ")"
+            itemPath = newUrl.deletingLastPathComponent().path + "/" + newName
+            newUrl.deleteLastPathComponent()
+            newUrl.appendPathComponent(newName, isDirectory: isDirectory)
+        }
+        return (newName, newUrl)
     }
     
     /// Возвращает кортеж, состоящий из имени и его индекса, если у имени был в конце числовой индекс в круглых скобках.

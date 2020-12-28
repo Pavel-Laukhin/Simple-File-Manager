@@ -1,5 +1,5 @@
 //
-//  ViewController+TableViewDataSource.swift
+//  BaseViewController+TableViewDataSource.swift
 //  File Manager
 //
 //  Created by Павел on 21.12.2020.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension ViewController: UITableViewDataSource {
+extension BaseViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return foldersAndFilesList.count

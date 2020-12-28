@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class BaseViewController: UIViewController {
     
     var fileManager: FileManagerServiceProtocol = FileManagerService()
     var foldersAndFilesList: [[String]] = [[],[]]
