@@ -8,16 +8,30 @@
 
 /* Begin PBXBuildFile section */
 		E956FE072590BBC100E22544 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E956FE062590BBC100E22544 /* AppDelegate.swift */; };
-		E956FE0B2590BBC100E22544 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E956FE0A2590BBC100E22544 /* ViewController.swift */; };
+		E956FE0B2590BBC100E22544 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E956FE0A2590BBC100E22544 /* BaseViewController.swift */; };
 		E956FE132590BBC400E22544 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E956FE122590BBC400E22544 /* Assets.xcassets */; };
+		E956FE272590C9B100E22544 /* BaseViewController+TableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E956FE262590C9B100E22544 /* BaseViewController+TableViewDataSource.swift */; };
+		E956FE2E2590CB7A00E22544 /* BaseViewController+TableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E956FE2D2590CB7A00E22544 /* BaseViewController+TableViewDelegate.swift */; };
+		E956FE322590CD1600E22544 /* UIView+Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E956FE312590CD1600E22544 /* UIView+Extentions.swift */; };
+		E956FE3C2590D13900E22544 /* FileManagerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E956FE3B2590D13900E22544 /* FileManagerService.swift */; };
+		E956FE4125912F5200E22544 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E956FE4025912F5100E22544 /* Array+Extensions.swift */; };
+		E956FE442591367700E22544 /* RandomAccessCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E956FE432591367700E22544 /* RandomAccessCollection.swift */; };
+		E980E0B5259238C3006036B2 /* FileContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E980E0B4259238C3006036B2 /* FileContentViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		E956FE032590BBC100E22544 /* File Manager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "File Manager.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E956FE062590BBC100E22544 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E956FE0A2590BBC100E22544 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		E956FE0A2590BBC100E22544 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		E956FE122590BBC400E22544 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E956FE172590BBC400E22544 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E956FE262590C9B100E22544 /* BaseViewController+TableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BaseViewController+TableViewDataSource.swift"; sourceTree = "<group>"; };
+		E956FE2D2590CB7A00E22544 /* BaseViewController+TableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BaseViewController+TableViewDelegate.swift"; sourceTree = "<group>"; };
+		E956FE312590CD1600E22544 /* UIView+Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extentions.swift"; sourceTree = "<group>"; };
+		E956FE3B2590D13900E22544 /* FileManagerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerService.swift; sourceTree = "<group>"; };
+		E956FE4025912F5100E22544 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
+		E956FE432591367700E22544 /* RandomAccessCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomAccessCollection.swift; sourceTree = "<group>"; };
+		E980E0B4259238C3006036B2 /* FileContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileContentViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,11 +65,66 @@
 			isa = PBXGroup;
 			children = (
 				E956FE062590BBC100E22544 /* AppDelegate.swift */,
-				E956FE0A2590BBC100E22544 /* ViewController.swift */,
-				E956FE122590BBC400E22544 /* Assets.xcassets */,
-				E956FE172590BBC400E22544 /* Info.plist */,
+				E980E0B325923898006036B2 /* Controllers */,
+				E956FE3A2590D11400E22544 /* FileManagerService */,
+				E956FE302590CCE500E22544 /* Helpers */,
+				E9F8BF2A25946C1300195BB7 /* Resources */,
+				E9F8BF2C25946C8900195BB7 /* Supplement files */,
 			);
 			path = "File Manager";
+			sourceTree = "<group>";
+		};
+		E956FE242590C98A00E22544 /* BaseViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E956FE0A2590BBC100E22544 /* BaseViewController.swift */,
+				E956FE262590C9B100E22544 /* BaseViewController+TableViewDataSource.swift */,
+				E956FE2D2590CB7A00E22544 /* BaseViewController+TableViewDelegate.swift */,
+			);
+			path = BaseViewController;
+			sourceTree = "<group>";
+		};
+		E956FE302590CCE500E22544 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				E956FE4025912F5100E22544 /* Array+Extensions.swift */,
+				E956FE432591367700E22544 /* RandomAccessCollection.swift */,
+				E956FE312590CD1600E22544 /* UIView+Extentions.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		E956FE3A2590D11400E22544 /* FileManagerService */ = {
+			isa = PBXGroup;
+			children = (
+				E956FE3B2590D13900E22544 /* FileManagerService.swift */,
+			);
+			path = FileManagerService;
+			sourceTree = "<group>";
+		};
+		E980E0B325923898006036B2 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				E956FE242590C98A00E22544 /* BaseViewController */,
+				E980E0B4259238C3006036B2 /* FileContentViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		E9F8BF2A25946C1300195BB7 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E956FE122590BBC400E22544 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		E9F8BF2C25946C8900195BB7 /* Supplement files */ = {
+			isa = PBXGroup;
+			children = (
+				E956FE172590BBC400E22544 /* Info.plist */,
+			);
+			path = "Supplement files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -126,8 +195,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E956FE0B2590BBC100E22544 /* ViewController.swift in Sources */,
+				E956FE0B2590BBC100E22544 /* BaseViewController.swift in Sources */,
+				E980E0B5259238C3006036B2 /* FileContentViewController.swift in Sources */,
+				E956FE2E2590CB7A00E22544 /* BaseViewController+TableViewDelegate.swift in Sources */,
+				E956FE322590CD1600E22544 /* UIView+Extentions.swift in Sources */,
+				E956FE4125912F5200E22544 /* Array+Extensions.swift in Sources */,
 				E956FE072590BBC100E22544 /* AppDelegate.swift in Sources */,
+				E956FE272590C9B100E22544 /* BaseViewController+TableViewDataSource.swift in Sources */,
+				E956FE442591367700E22544 /* RandomAccessCollection.swift in Sources */,
+				E956FE3C2590D13900E22544 /* FileManagerService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,7 +333,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 367WY2VQ82;
-				INFOPLIST_FILE = "File Manager/Info.plist";
+				INFOPLIST_FILE = "File Manager/Supplement files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -276,7 +352,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 367WY2VQ82;
-				INFOPLIST_FILE = "File Manager/Info.plist";
+				INFOPLIST_FILE = "File Manager/Supplement files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

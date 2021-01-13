@@ -14,13 +14,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
-        let mainVC = ViewController()
-        let navVC = UINavigationController(rootViewController: mainVC)
+        let baseVC = BaseViewController(title: "Documents", at: "Documents")
+        let navVC = UINavigationController(rootViewController: baseVC)
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = navVC
         window?.makeKeyAndVisible()
-        
         return true
     }
 
